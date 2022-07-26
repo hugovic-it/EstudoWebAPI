@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using NDogs.Controllers;
+using NDogs.Models;
 
 namespace NDogs.Data
 {
