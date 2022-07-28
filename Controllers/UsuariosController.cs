@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NDogs.Data;
 using NDogs.Models;
 
 namespace NDogs.Controllers
 {
     [Route("[controller]")]
-    [ApiController]
+    [ApiController] 
     public class UsuariosController : ControllerBase
     {
 
@@ -19,18 +20,25 @@ namespace NDogs.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Usuario>> Get() //Retorna todos os usuarios 
         {
-            var usuarios = _context.Usuarios.ToList();
-            if (usuarios is null)
-            {
-                return NotFound();
+
+            try{
+                var usuarios = _context.Usuarios.AsNoTracking().ToList();
+                if (usuarios is null)
+                {
+                    return NotFound();
+                }
+                return Ok(usuarios);
+            }catch(Exception){
+                return StatusCode(StatusCodes.Status500InternalServerError,"Ocorreu um problema ao tratar a sua solicitacao");
             }
-            return Ok(usuarios);
+
+
         }
 
         [HttpGet("{id:int}", Name = "ObterUsuario")]
         public ActionResult<Usuario> Get(int id)
         {//Retorna o usuario pelo Id
-            var usuario = _context.Usuarios.FirstOrDefault(p => p.UsuarioId == id);
+            var usuario = _context.Usuarios.AsNoTracking().FirstOrDefault(p => p.UsuarioId == id);
             if (usuario is null)
             {
                 return NotFound();
