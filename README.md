@@ -1,2 +1,2 @@
 # NDogs
-Descricao do projeto NDogs
+Descricao do projeto EstudoWebAPI
